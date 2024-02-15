@@ -2131,7 +2131,7 @@
             "read_only": false,
             "parameters": {
                 "group_id": {
-                    "description": "ID of group",
+                    "description": "Team/Group ID",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
@@ -2216,14 +2216,14 @@
             "versions": "EQ(*)"
         },
         {
-            "action": "add member to channel",
+            "action": "add user to channel",
             "description": "Add user to a microsoft teams channel",
             "type": "generic",
             "identifier": "add_member_to_channel",
             "read_only": false,
             "parameters": {
                 "group_id": {
-                    "description": "ID of group",
+                    "description": "Team/Group ID",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
@@ -2243,7 +2243,7 @@
                     "order": 1
                 },
                 "member_id": {
-                    "description": "Member ID",
+                    "description": "User ID",
                     "data_type": "string",
                     "order": 2
                 }
@@ -2263,10 +2263,7 @@
                 },
                 {
                     "data_path": "action_result.parameter.member_id",
-                    "data_type": "string",
-                    "example_values": [
-                        "Test"
-                    ]
+                    "data_type": "string"
                 },
                 {
                     "data_path": "action_result.summary",

@@ -223,6 +223,8 @@ VARIABLE | REQUIRED | TYPE | DESCRIPTION
 [list groups](#action-list-groups) - List all Azure Groups  
 [list teams](#action-list-teams) - List all Microsoft Teams  
 [create meeting](#action-create-meeting) - Create a microsoft teams meeting  
+[create channel](#action-create-channel) - Create a microsoft teams channel
+[add user to channel](#action-add-member) - Add a user to a private or shared channel
 
 ## action: 'test connectivity'
 Validate the asset configuration for connectivity using supplied configuration
@@ -634,5 +636,63 @@ action_result.data.\*.allowAttendeeToEnableCamera | boolean |  |   True  False
 action_result.data.\*.outerMeetingAutoAdmittedUsers | string |  |  
 action_result.summary | string |  |  
 action_result.message | string |  |   Meeting Created Successfully 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1 
+
+
+## action: 'create channel'
+Create a microsoft teams channel
+
+Type: **generic**  
+Read only: **False**
+
+The <b>membership_type</b> parameter defines the type of channel to be created. "Standard" channels don't allow adding users. To be able to use the "add user to channel" action, the channel membershipType setting has to be "shared" or "private". See more: https://learn.microsoft.com/en-us/graph/api/channel-post-members?view=graph-rest-1.0&tabs=http
+
+#### Action Parameters
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**group_id** |  required  | ID of the MS Teams team/group | 
+**display_name** |  required  | Name of the channel | string | 
+**description** |  required  | Description of the channel | string | 
+**membership_type** |  optional  | Possible values: "standard", "shared", "private" | string | 
+
+#### Action Output
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string |  |   success  failed 
+action_result.parameter.display_name | string |  |
+action_result.parameter.description | string |  |   Test 
+action_result.parameter.subject | string |  |   Let's go for lunch 
+action_result.data.\*.id | string |  |
+action_result.data.\*.membershipType | string |  |
+action_result.summary | string |  |  
+action_result.message | string |  |   Channel Created Successfully 
+summary.total_objects | numeric |  |   1 
+summary.total_objects_successful | numeric |  |   1 
+
+
+## action: 'add user to channel'
+Add user to a microsoft teams channel
+
+Type: **generic**  
+Read only: **False**
+
+This operation is allowed only for channels with a membershipType value of private or shared.
+
+#### Action Parameters
+PARAMETER | REQUIRED | DESCRIPTION | TYPE | CONTAINS
+--------- | -------- | ----------- | ---- | --------
+**group_id** |  required  | ID of the MS Teams team/group | 
+**channel_id** |  required  | ID of the channel | 
+**member_id** |  required  | ID of the user | string | 
+
+#### Action Output
+DATA PATH | TYPE | CONTAINS | EXAMPLE VALUES
+--------- | ---- | -------- | --------------
+action_result.status | string |  |   success  failed 
+action_result.parameter.channel_id | string |  |
+action_result.parameter.member_id | string |  |
+action_result.summary | string |  |  
+action_result.message | string |  |   Channel Created Successfully 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1 
