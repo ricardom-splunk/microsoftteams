@@ -693,6 +693,6 @@ action_result.status | string |  |   success  failed
 action_result.parameter.channel_id | string |  |
 action_result.parameter.member_id | string |  |
 action_result.summary | string |  |  
-action_result.message | string |  |   Channel Created Successfully 
+action_result.message | string |  |   User successfully added to channel 
 summary.total_objects | numeric |  |   1 
 summary.total_objects_successful | numeric |  |   1 
