@@ -10,7 +10,7 @@
     "product_version_regex": ".*",
     "publisher": "Splunk",
     "license": "Copyright (c) 2019-2023 Splunk Inc.",
-    "app_version": "2.5.0",
+    "app_version": "2.5.0-fdse",
     "utctime_updated": "2022-01-14T23:54:39.000000Z",
     "package_name": "phantom_microsoftteams",
     "main_module": "microsoftteams_connector.py",
@@ -2119,6 +2119,183 @@
             "render": {
                 "type": "custom",
                 "view": "microsoftteams_view.display_meeting"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "create channel",
+            "description": "Create a microsoft teams channel",
+            
+            "type": "generic",
+            "identifier": "create_channel",
+            "read_only": false,
+            "parameters": {
+                "group_id": {
+                    "description": "ID of group",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "ms teams group id"
+                    ],
+                    "order": 0
+                },
+                "display_name": {
+                    "description": "Channel display name",
+                    "data_type": "string",
+                    "order": 1
+                },
+                "description": {
+                    "description": "Channel description",
+                    "data_type": "string",
+                    "order": 2
+                },
+                "membership_type": {
+                    "description": "Membership type (standard, shared or private)",
+                    "data_type": "string",
+                    "order": 3
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.display_name",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.description",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test"
+                    ]
+                },
+                {
+                    "data_path": "action_result.data.*.id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.data.*.membershipType",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Channel Created Successfully"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
+            },
+            "versions": "EQ(*)"
+        },
+        {
+            "action": "add member to channel",
+            "description": "Add user to a microsoft teams channel",
+            "type": "generic",
+            "identifier": "add_member_to_channel",
+            "read_only": false,
+            "parameters": {
+                "group_id": {
+                    "description": "ID of group",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "ms teams group id"
+                    ],
+                    "order": 0
+                },
+                "channel_id": {
+                    "description": "Channel ID",
+                    "data_type": "string",
+                    "required": true,
+                    "primary": true,
+                    "contains": [
+                        "ms teams channel id"
+                    ],
+                    "order": 1
+                },
+                "member_id": {
+                    "description": "Member ID",
+                    "data_type": "string",
+                    "order": 2
+                }
+            },
+            "output": [
+                {
+                    "data_path": "action_result.status",
+                    "data_type": "string",
+                    "example_values": [
+                        "success",
+                        "failed"
+                    ]
+                },
+                {
+                    "data_path": "action_result.parameter.channel_id",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.parameter.member_id",
+                    "data_type": "string",
+                    "example_values": [
+                        "Test"
+                    ]
+                },
+                {
+                    "data_path": "action_result.summary",
+                    "data_type": "string"
+                },
+                {
+                    "data_path": "action_result.message",
+                    "data_type": "string",
+                    "example_values": [
+                        "Channel Created Successfully"
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                },
+                {
+                    "data_path": "summary.total_objects_successful",
+                    "data_type": "numeric",
+                    "example_values": [
+                        1
+                    ]
+                }
+            ],
+            "render": {
+                "type": "table"
             },
             "versions": "EQ(*)"
         }

@@ -1120,6 +1120,71 @@ class MicrosoftTeamConnector(BaseConnector):
 
         return action_result.set_status(phantom.APP_SUCCESS, status_message='Meeting Created Successfully')
 
+    def _handle_create_channel(self, param):
+        """ This function is used to create a new channel for Microsoft Teams.
+
+        :param param: Dictionary of input parameters
+        :return: status success/failure
+        """
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        display_name = param.get(MSTEAMS_JSON_DISPLAY_NAME)
+        description = param.get(MSTEAMS_JSON_DESCRIPTION)
+        membership_type = param.get('membership_type')
+        data = {
+                "displayName": display_name,
+                "description": description,
+                "membershipType": membership_type
+        }
+
+        group_id = param[MSTEAMS_JSON_GROUP_ID]
+        endpoint = MSTEAMS_MSGRAPH_CREATE_CHANNELS_ENDPOINT.format(group_id=group_id)
+
+        ret_val, response = self._update_request(endpoint=endpoint, action_result=action_result, method='post',
+                                                 data=json.dumps(data))
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        action_result.add_data(response)
+
+        return action_result.set_status(phantom.APP_SUCCESS, status_message='Channel Created Successfully')
+
+    def _handle_add_member_to_channel(self, param):
+        """ This function is used to add a member to an existing Microsoft Teams channel.
+
+        :param param: Dictionary of input parameters
+        :return: status success/failure
+        """
+
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        channel_id = param.get('channel_id')
+        member_id = param.get('member_id')
+
+        data = {
+            "@odata.type": "#microsoft.graph.aadUserConversationMember",
+            "userId": member_id,
+            "user@odata.bind":f"https://graph.microsoft.com/v1.0/users('{member_id}')"
+        }
+
+        group_id = param[MSTEAMS_JSON_GROUP_ID]
+        endpoint = MSTEAMS_MSGRAPH_ADD_MEMBERS_TO_CHANNELS_ENDPOINT.format(group_id=group_id, channel_id=channel_id)
+
+        ret_val, response = self._update_request(endpoint=endpoint, action_result=action_result, method='post',
+                                                 data=json.dumps(data))
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        action_result.add_data(response)
+
+        return action_result.set_status(phantom.APP_SUCCESS, status_message=f"User successfully added to channel")
+
+
     def handle_action(self, param):
         """ This function gets current action identifier and calls member function of its own to handle the action.
 
@@ -1138,7 +1203,9 @@ class MicrosoftTeamConnector(BaseConnector):
             'list_users': self._handle_list_users,
             'list_channels': self._handle_list_channels,
             'get_admin_consent': self._handle_get_admin_consent,
-            'create_meeting': self._handle_create_meeting
+            'create_meeting': self._handle_create_meeting,
+            'create_channel': self._handle_create_channel,
+            'add_member_to_channel': self._handle_add_member_to_channel
         }
 
         action = self.get_action_identifier()
